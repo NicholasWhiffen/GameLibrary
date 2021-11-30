@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+
+{% block body %}
+    <table>
+        <tr>
+            <th>"Cover Art"</th>
+            <th>"Title"</th>
+            <th>"Console"</th>
+            <th>"Year"</th>
+            <th>"Completed"</th>
+            <th>"Rating"</th>
+            {% for game in games %}
+                <th>{{game[5]}}</th>
+                <th>{{game[1]}}</th>
+                <th>{{game[2]}}</th>
+                <th>{{game[3]}}</th>
+                <th>{{game[4]}}</th>
+                <th>{{game[6]}}</th>
+            {% endfor %}
+        </tr>
+    </table>
+{% endblock %}
