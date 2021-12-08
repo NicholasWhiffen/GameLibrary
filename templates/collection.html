@@ -9,14 +9,18 @@
             <th>"Year"</th>
             <th>"Completed"</th>
             <th>"Rating"</th>
-            {% for game in games %}
-                <th>{{game[5]}}</th>
-                <th>{{game[1]}}</th>
-                <th>{{game[2]}}</th>
-                <th>{{game[3]}}</th>
-                <th>{{game[4]}}</th>
-                <th>{{game[6]}}</th>
-            {% endfor %}
         </tr>
+            {% for game in games %}
+                <tr>
+                    <th><img src="static/images/{{game[4]}}"></th>
+                    <th>{{game[0]}}</th>
+                    <th>{{game[1]}}</th>
+                    <th>{{game[2]}}</th>
+                    <th>{{game[3]}}</th>
+                    <th>{{game[5]}}</th>
+                    <th><button type="button">Update</button></th>
+                </tr>
+            {% endfor %}
+
     </table>
 {% endblock %}
