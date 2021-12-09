@@ -27,12 +27,11 @@ def index():
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
-
     if request.method == "POST":
         with closing(conn.cursor()) as c:
-            query = "SELECT * from Users WHERE Users.username = ?"
+            query = "SELECT * from Users WHERE username = ?"
             c.execute(query, (request.form.get("username"),))
-            user = c.fetchall()
+            user = c.fetchone()
         if user:
             if request.form.get("username") == user[1] and request.form.get("password") == user[2]:
                 session["username"] = request.form.get("username")
@@ -44,45 +43,60 @@ def login():
     return render_template("login.html")
 
 
-
 @app.route("/register", methods=["GET", "POST"])
 def register():
-    with closing(conn.cursor()) as c:
-        query = "SELECT * from Users"
-        c.execute(query)
-        users = c.fetchall()
     if request.method == "POST":
-        if users:
-            if request.form.get("username") == user[1] and request.form.get("password") == user[2]:
-                session["username"] = request.form.get("username")
-                return redirect("/")
-            elif request.form.get("username") != user[1] or request.form.get("password") != user[2]:
-                flash("Incorrect username or password")
+        with closing(conn.cursor()) as c:
+            query = "SELECT * from Users WHERE Users.username = ?"
+            c.execute(query, (request.form.get("username"),))
+            user = c.fetchone()
+        if user:
+            flash("Username already taken")
         else:
-            flash("Username does not exist")
+            if request.form.get("username") != "":
+                if request.form.get("password") == request.form.get("confirmPassword") and request.form.get(
+                        "password") != "":
+                    with closing(conn.cursor()) as c:
+                        query = "INSERT into Users(username, password) Values(?,?)"
+                        c.execute(query, (request.form.get("username"), request.form.get("password")))
+                        conn.commit()
+                    session["username"] = request.form.get("username")
+                    return redirect("/")
+                elif request.form.get("password") != request.form.get("confirmPassword"):
+                    flash("Passwords do not match")
+            else:
+                flash("No username entered")
     return render_template("register.html")
+
 
 @app.route("/logout", methods=["GET", "POST"])
 def logout():
     session.clear()
     return redirect("/")
 
+
 @app.route("/collection", methods=["GET", "POST"])
 def collection():
+    if not session.get("username"):
+        return redirect("/login")
     with closing(conn.cursor()) as c:
-        query = "SELECT * from Collections"
-        c.execute(query)
+        query = "SELECT * from Collections WHERE user = ?"
+        c.execute(query, (session.get("username"),))
         results = c.fetchall()
         games = []
         for result in results:
-            games.append((result[1], result[2], result[3], result[4], result[5], result[6]))
+            games.append((result[0], result[1], result[2], result[3], result[4], result[5], result[6]))
     return render_template("collection.html", games=games)
+
 
 @app.route("/add")
 def add():
+    if not session.get("username"):
+        return redirect("/login")
     return render_template("add.html")
 
-@app.route("/add", methods = ['POST'])
+
+@app.route("/add", methods=['POST'])
 def getFormData():
     uploaded_file = request.files["file"]
     filename = secure_filename(uploaded_file.filename)
@@ -91,16 +105,43 @@ def getFormData():
     year = request.values["year"]
     completed = request.values["completed"]
     rating = request.values["rating"]
+    user = session.get("username")
     if filename != '':
         file_ext = os.path.splitext(filename)[1]
         if file_ext not in app.config['UPLOAD_EXTENSIONS']:
             abort(400)
         uploaded_file.save(os.path.join(app.config['UPLOAD_PATH'], filename))
         with closing(conn.cursor()) as c:
-            query = "INSERT into Collections(boxart, game_name, console, year, completed, rating) Values(?,?,?,?,?,?)"
-            c.execute(query, (filename, title, console, year, completed, rating))
+            query = "INSERT into Collections(boxart, game_name, console, year, completed, rating, user) Values(?,?,?,?,?,?,?)"
+            c.execute(query, (filename, title, console, year, completed, rating, user))
             conn.commit()
     return redirect("/collection")
+
+
+@app.route("/update/<int:id>", methods=["GET", 'POST'])
+def update(id):
+    if not session.get("username"):
+        return redirect("/login")
+    if request.method == "POST":
+        uploaded_file = request.files["file"]
+        filename = secure_filename(uploaded_file.filename)
+        title = request.values["title"]
+        console = request.values["console"]
+        year = request.values["year"]
+        completed = request.values["completed"]
+        rating = request.values["rating"]
+        if filename != '':
+            file_ext = os.path.splitext(filename)[1]
+            if file_ext not in app.config['UPLOAD_EXTENSIONS']:
+                abort(400)
+            uploaded_file.save(os.path.join(app.config['UPLOAD_PATH'], filename))
+            with closing(conn.cursor()) as c:
+                query = "UPDATE Collections SET boxart = ?, game_name = ?, console = ?, year = ?, completed = ?, rating = ? WHERE game_id = ?"
+                c.execute(query, (filename, title, console, year, completed, rating, id))
+                conn.commit()
+        return redirect("/collection")
+    else:
+        return render_template("update.html", gameId=id)
 
 
 def validate_image(stream):

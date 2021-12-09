@@ -6,10 +6,17 @@
         <link rel="stylesheet" href="static/style.css">
     </head>
     <body>
+        {% for message in get_flashed_messages() %}
+
+            <div class="alert" role="alert">
+              {{ message }}
+            </div>
+
+        {% endfor %}
         <form action="/register" method="post">
             <input placeholder="username" name="username" type="text">
             <input placeholder="password" name="password" type="text">
-            <input placeholder="re-enter password" name="password_check" type="text">
+            <input placeholder="confirm password" name="confirmPassword" type="text">
             <input type="submit">
         </form>
     </body>

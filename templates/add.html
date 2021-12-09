@@ -3,19 +3,19 @@
 {% block body %}
 
     <h1>Add Game</h1>
-    <form method="POST" action="" enctype="multipart/form-data" >
-        <p><input type="file" name="file" accept=".png,.jfif,.jpg,.jpeg"></p>
-        <p><label for= "title">Title:</label>
-            <input type="text" name="title" id="title"></p>
-        <p><label for= "console">Console:</label>
-            <input type="text" name="console" id="console"></p>
-        <p><label for= "year">Year:</label>
-            <input type="text" name="year" id="year"></p>
-        <p><label for= "completed">Completed:</label>
-            <input type="text" name="completed" id="completed"></p>
-        <p><label for= "rating">Rating:</label>
-            <input type="text" name="rating" id="rating"></p>
-        <p><input type="submit" value="Submit"></p>
+    <form method="POST" action="" enctype="multipart/form-data" id="addForm">
+        <p><input type="file" name="file" accept=".png,.jfif,.jpg,.jpeg" id="addFile"></p>
+        <p><label for= "addTitle">Title:</label>
+            <input type="text" name="title" id="addTitle"><span></span></p>
+        <p><label for= "addConsole">Console:</label>
+            <input type="text" name="console" id="addConsole"><span></span></p>
+        <p><label for= "addYear">Year:</label>
+            <input type="text" name="year" id="addYear"><span></span></p>
+        <p><label for= "addCompleted">Completed:</label>
+            <input type="text" name="completed" id="addCompleted"><span></span></p>
+        <p><label for= "addRating">Rating:</label>
+            <input type="text" name="rating" id="addRating"><span></span></p>
+        <p><input type="submit" value="Submit" id="addSubmit"></p>
     </form>
 
 {% endblock %}

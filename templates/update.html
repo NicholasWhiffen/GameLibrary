@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+
+{% block body %}
+
+    <h1>Update Game</h1>
+    <form method="POST" action="" enctype="multipart/form-data" id="updateForm">
+        <p><input type="file" name="file" accept=".png,.jfif,.jpg,.jpeg" id="updateFile"></p>
+        <p><label for= "updateTitle">Title:</label>
+            <input type="text" name="title" id="updateTitle"><span></span></p>
+        <p><label for= "updateConsole">Console:</label>
+            <input type="text" name="console" id="updateConsole"><span></span></p>
+        <p><label for= "updateYear">Year:</label>
+            <input type="text" name="year" id="updateYear"><span></span></p>
+        <p><label for= "updateCompleted">Completed:</label>
+            <input type="text" name="completed" id="updateCompleted"><span></span></p>
+        <p><label for= "updateRating">Rating:</label>
+            <input type="text" name="rating" id="updateRating"><span></span></p>
+        <p><input type="submit" value="Submit" id="updateSubmit"></p>
+    </form>
+
+{% endblock %}
