@@ -1,11 +1,9 @@
+import os
 import sqlite3
 from contextlib import closing
-import imghdr
-import os
 from flask import Flask, render_template, redirect, request, abort, session, flash
-from flask_session import Session
-from flask_login import UserMixin, login_user, LoginManager, login_required, logout_user, current_user
 from werkzeug.utils import secure_filename
+from flask_session import Session
 
 app = Flask(__name__)
 app.config['UPLOAD_PATH'] = 'static/images'
