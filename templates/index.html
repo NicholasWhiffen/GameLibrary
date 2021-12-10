@@ -2,9 +2,15 @@
 
 {% block body %}
 
+
     {% if session.username %}
-        Welcome {{session.username}}
-    
+        <div id="indexText">
+            <h2>Welcome {{session.username}}</h2>
+            <p>This is a flask website project</p>
+            <p>In the top navbar you will see a collection button and an add button</p>
+            <p>If this is your first time visiting the website you will find your collection is empty.</p>
+            <p>Click the Add button to get started</p>
+        </div>
     {% else %} 
         You are not logged in.
         <a href="/login">Log in</a>

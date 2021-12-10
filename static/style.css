@@ -81,3 +81,11 @@ a:hover, a:active {
     color: black;
     border: 2px solid #c25c18;
 }
+#indexText{
+    width: 90%;
+    margin-top: 10px;
+    margin-left: 5%;
+    margin-right: 5%;
+    border: 1px solid black;
+    padding: 10px;
+}
