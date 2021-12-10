@@ -39,7 +39,7 @@ def login():
             elif request.form.get("username") != user[1] or request.form.get("password") != user[2]:
                 flash("Incorrect username or password")
         else:
-            flash("Username does not exist")
+            flash("* Username does not exist")
     return render_template("login.html")
 
 
@@ -63,9 +63,9 @@ def register():
                     session["username"] = request.form.get("username")
                     return redirect("/")
                 elif request.form.get("password") != request.form.get("confirmPassword"):
-                    flash("Passwords do not match")
+                    flash("* Passwords do not match")
             else:
-                flash("No username entered")
+                flash("* No username entered")
     return render_template("register.html")
 
 
@@ -103,8 +103,8 @@ def getFormData():
     title = request.values["title"]
     console = request.values["console"]
     year = request.values["year"]
-    completed = request.values["completed"]
-    rating = request.values["rating"]
+    completed = request.form.get("addCompleted")
+    rating = request.form.get("addRating")
     user = session.get("username")
     if filename != '':
         file_ext = os.path.splitext(filename)[1]
@@ -115,6 +115,9 @@ def getFormData():
             query = "INSERT into Collections(boxart, game_name, console, year, completed, rating, user) Values(?,?,?,?,?,?,?)"
             c.execute(query, (filename, title, console, year, completed, rating, user))
             conn.commit()
+    else:
+        flash("* Must choose a file")
+        return render_template("add.html")
     return redirect("/collection")
 
 
@@ -122,26 +125,56 @@ def getFormData():
 def update(id):
     if not session.get("username"):
         return redirect("/login")
+    with closing(conn.cursor()) as c:
+        query = "SELECT * from Collections WHERE game_id = ?"
+        c.execute(query, str(id))
+        result = c.fetchone()
+        game = [result[1], result[2], result[3], result[4], result[5], result[6]]
+    file = game[4]
+    title = game[0]
+    console = game[1]
+    year = game[2]
+    completed = game[3]
+    rating = game[5]
+
+
     if request.method == "POST":
         uploaded_file = request.files["file"]
         filename = secure_filename(uploaded_file.filename)
         title = request.values["title"]
         console = request.values["console"]
         year = request.values["year"]
-        completed = request.values["completed"]
-        rating = request.values["rating"]
+        completed = request.form.get("updateCompleted")
+        rating = request.form.get("updateRating")
         if filename != '':
             file_ext = os.path.splitext(filename)[1]
             if file_ext not in app.config['UPLOAD_EXTENSIONS']:
                 abort(400)
             uploaded_file.save(os.path.join(app.config['UPLOAD_PATH'], filename))
             with closing(conn.cursor()) as c:
-                query = "UPDATE Collections SET boxart = ?, game_name = ?, console = ?, year = ?, completed = ?, rating = ? WHERE game_id = ?"
+                query = 'UPDATE Collections SET boxart = ?, game_name = ?, console = ?, year = ?, completed = ?, rating = ? WHERE game_id = ?'
                 c.execute(query, (filename, title, console, year, completed, rating, id))
                 conn.commit()
-        return redirect("/collection")
-    else:
-        return render_template("update.html", gameId=id)
+            return redirect("/collection")
+        else:
+            with closing(conn.cursor()) as c:
+                query = 'UPDATE Collections SET game_name = ?, console = ?, year = ?, completed = ?, rating = ? WHERE game_id = ?'
+                c.execute(query, (title, console, year, completed, rating, id))
+                conn.commit()
+            return redirect("/collection")
+
+    return render_template("update.html", gameId=id, file=file, title=title, console=console, year=year, completed=completed, rating=rating)
+
+
+@app.route("/delete/<int:id>", methods=["GET", 'POST'])
+def delete(id):
+    if not session.get("username"):
+        return redirect("/login")
+
+    with closing(conn.cursor()) as c:
+        c.execute('DELETE FROM Collections WHERE game_id = (?)', str(id))
+        conn.commit()
+    return redirect("/collection")
 
 
 def validate_image(stream):

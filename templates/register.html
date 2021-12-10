@@ -3,7 +3,7 @@
     <head>
         <meta name="viewport" charset="UTF-8">
         <title>index</title>
-        <link rel="stylesheet" href="static/style.css">
+        <link rel="stylesheet" href="/static/style.css">
     </head>
     <body>
         {% for message in get_flashed_messages() %}
@@ -19,5 +19,6 @@
             <input placeholder="confirm password" name="confirmPassword" type="text">
             <input type="submit">
         </form>
+        <a href="{{url_for('login')}}">Back</a>
     </body>
 </html>

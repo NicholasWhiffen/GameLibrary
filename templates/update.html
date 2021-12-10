@@ -3,18 +3,36 @@
 {% block body %}
 
     <h1>Update Game</h1>
+    {% for message in get_flashed_messages() %}
+
+        <div class="alert" role="alert">
+            {{ message }}
+        </div>
+
+    {% endfor %}
     <form method="POST" action="" enctype="multipart/form-data" id="updateForm">
         <p><input type="file" name="file" accept=".png,.jfif,.jpg,.jpeg" id="updateFile"></p>
         <p><label for= "updateTitle">Title:</label>
-            <input type="text" name="title" id="updateTitle"><span></span></p>
+            <input type="text" name="title" id="updateTitle" value="{{title}}"><span></span></p>
         <p><label for= "updateConsole">Console:</label>
-            <input type="text" name="console" id="updateConsole"><span></span></p>
+            <input type="text" name="console" id="updateConsole" value="{{console}}"><span></span></p>
         <p><label for= "updateYear">Year:</label>
-            <input type="text" name="year" id="updateYear"><span></span></p>
+            <input type="text" name="year" id="updateYear" value="{{year}}"><span></span></p>
         <p><label for= "updateCompleted">Completed:</label>
-            <input type="text" name="completed" id="updateCompleted"><span></span></p>
+            <select name="updateCompleted" id="updateCompleted">
+                <option value={{completed}} selected="selected" hidden="hidden">{{completed}}</option>
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+            </select><span></span></p>
         <p><label for= "updateRating">Rating:</label>
-            <input type="text" name="rating" id="updateRating"><span></span></p>
+            <select name="updateRating" id="updateRating">
+                <option value={{rating}} selected="selected" hidden="hidden">{{rating}}</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+            </select><span></span></p>
         <p><input type="submit" value="Submit" id="updateSubmit"></p>
     </form>
 

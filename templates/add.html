@@ -3,6 +3,13 @@
 {% block body %}
 
     <h1>Add Game</h1>
+    {% for message in get_flashed_messages() %}
+
+        <div class="alert" role="alert">
+            {{ message }}
+        </div>
+
+    {% endfor %}
     <form method="POST" action="" enctype="multipart/form-data" id="addForm">
         <p><input type="file" name="file" accept=".png,.jfif,.jpg,.jpeg" id="addFile"></p>
         <p><label for= "addTitle">Title:</label>
@@ -12,9 +19,18 @@
         <p><label for= "addYear">Year:</label>
             <input type="text" name="year" id="addYear"><span></span></p>
         <p><label for= "addCompleted">Completed:</label>
-            <input type="text" name="completed" id="addCompleted"><span></span></p>
+            <select name="addCompleted" id="addCompleted">
+					<option value="Yes">Yes</option>
+					<option value="No">No</option>
+            </select><span></span></p>
         <p><label for= "addRating">Rating:</label>
-            <input type="text" name="rating" id="addRating"><span></span></p>
+            <select name="addRating" id="addRating">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+            </select><span></span></p>
         <p><input type="submit" value="Submit" id="addSubmit"></p>
     </form>
 

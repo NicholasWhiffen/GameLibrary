@@ -3,22 +3,24 @@
 {% block body %}
     <table>
         <tr>
-            <th>"Cover Art"</th>
-            <th>"Title"</th>
-            <th>"Console"</th>
-            <th>"Year"</th>
-            <th>"Completed"</th>
-            <th>"Rating"</th>
+            <th class="toplabels">Cover Art</th>
+            <th class="toplabels">Title</th>
+            <th class="toplabels">Console</th>
+            <th class="toplabels">Year</th>
+            <th class="toplabels">Completed</th>
+            <th class="toplabels">Rating</th>
         </tr>
+
             {% for game in games %}
                 <tr>
-                    <th><img class="coverArt" src="static/images/{{game[5]}}"></th>
-                    <th>{{game[1]}}</th>
-                    <th>{{game[2]}}</th>
-                    <th>{{game[3]}}</th>
-                    <th>{{game[4]}}</th>
-                    <th>{{game[6]}}</th>
+                    <th class="info"><img class="coverArt" src="static/images/{{game[5]}}"></th>
+                    <th class="info">{{game[1]}}</th>
+                    <th class="info">{{game[2]}}</th>
+                    <th class="info">{{game[3]}}</th>
+                    <th class="info">{{game[4]}}</th>
+                    <th class="info">{{game[6]}}</th>
                     <th><a href="{{ url_for('update', id=game[0])}}" class="update">Update</a></th>
+                    <th><a href="{{ url_for('delete', id=game[0])}}" class="delete">Delete</a></th>
                 </tr>
             {% endfor %}
 
