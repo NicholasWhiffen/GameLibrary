@@ -3,10 +3,9 @@
     overflow: hidden;
 }
   
-  /* Style the links inside the navigation bar */
+
 .topnav a {
     float: left;
-    background-color: #333;
     color: #f2f2f2;
     text-align: center;
     padding: 14px 16px;
@@ -18,17 +17,6 @@
     float: right;
 }
   
-  /* Change the color of links on hover */
-.topnav a:hover {
-    background-color: #c25c18;
-    color: white;
-}
-  
-  /* Add a color to the active/current link */
-.topnav a.active {
-    background-color: #c25c18;
-    color: white;
-}
 li {
     display: inline;
 }
@@ -48,6 +36,10 @@ table{
     margin-right: 5%;
     border: 1px solid black;
     padding: 10px;
+}
+th{
+    padding-left: 10px;
+    padding-right: 10px;
 }
 
 .toplabels{
@@ -75,8 +67,8 @@ input[type=submit] {
     cursor: pointer;
 }
 a:link, a:visited {
-    background-color: white;
-    color: black;
+    background-color: #c25c18;
+    color: white;
     border: 2px solid #c25c18;
     padding: 10px 20px;
     text-align: center;
@@ -85,6 +77,7 @@ a:link, a:visited {
 }
   
 a:hover, a:active {
-    background-color: #c25c18;
-    color: white;
+    background-color: white;
+    color: black;
+    border: 2px solid #c25c18;
 }
