@@ -26,7 +26,7 @@ li {
 }
 
 .info{
-    
+    text-align: center;
     border: 1px solid black;
 }
 table{
@@ -43,6 +43,7 @@ th{
 }
 
 .toplabels{
+    text-align: center;
     padding-bottom: 20px;
     padding-top: 10px;
 }

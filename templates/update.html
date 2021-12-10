@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 
 {% block body %}
-
+    <div class="container">
     <h1>Update Game</h1>
     {% for message in get_flashed_messages() %}
 
@@ -35,5 +35,6 @@
             </select><span></span></p>
         <p><input type="submit" value="Submit" id="updateSubmit"></p>
     </form>
+    </div>
 
 {% endblock %}
